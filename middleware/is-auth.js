@@ -8,19 +8,18 @@ module.exports = (req, res, next) => {
     throw error;
   }
   const token = authHeader.split(' ')[1];
-  let decodeToken;
+  let decodedToken;
   try {
-    decodeToken = jwt.verify(token, 'superkey');
+    decodedToken = jwt.verify(token, 'superkey');
   } catch (err) {
-    console.log('a');
     err.statusCode = 500;
     throw err;
   }
-  if (!decodeToken) {
+  if (!decodedToken) {
     const error = new Error('Not authenticated.');
     error.statusCode = 401;
     throw error;
   }
-  req.userId = decodeToken.userId;
+  req.userId = decodedToken.userId;
   next();
 };

@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-const fileStroge = multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images');
   },
@@ -19,11 +19,11 @@ const fileStroge = multer.diskStorage({
   }
 });
 
-const fileFelter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png' ||
     file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/png'
+    file.mimetype === 'image/jpeg'
   ) {
     cb(null, true);
   } else {
@@ -34,7 +34,7 @@ const fileFelter = (req, file, cb) => {
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
 app.use(
-  multer({ storage: fileStroge, fileFilter: fileFelter }).single('image')
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
